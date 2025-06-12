@@ -1,0 +1,165 @@
+/* Dentro de src/components/AuthScreen.css (VERSÃO CORRIGIDA) */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* --- Estilo da Imagem (Ilustração) --- */
+.auth-illustration {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 4rem;
+}
+
+.auth-illustration img {
+  max-width: 450px;
+  height: auto;
+}
+
+/* --- Estilo do Formulário --- */
+.auth-form {
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* O componente SignInWithGoogle já pode vir com seu próprio estilo,
+   mas podemos garantir que ele ocupe 100% da largura */
+.auth-form > div:first-of-type {
+  width: 100%;
+}
+
+/* --- Estilo do Separador "OU" (CORRIGIDO) --- */
+.separator {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  line-height: 0.1em;
+  margin: 1.5rem 0;
+}
+
+.separator span {
+  background: #fff;
+  padding: 0 15px;
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+
+/* --- Estilo dos Botões e Links --- */
+.create-account-btn, .login-btn {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-account-btn {
+  background-color: #3498db;
+  color: white;
+}
+.create-account-btn:hover {
+  background-color: #2980b9;
+}
+
+.login-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+.login-btn:hover {
+  background-color: #c0392b;
+}
+
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.terms-text {
+  font-size: 0.75rem;
+  color: #95a5a6;
+  text-align: center;
+  max-width: 300px;
+}
+.terms-text a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.back-link {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Estilo Específico para o Botão Google (Versão Final) --- */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #ffffff;
+  color: #444;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  gap: 10px;
+  transition: background-color 0.2s;
+}
+
+.google-btn:hover {
+  background-color: #f7f7f7;
+}
+
+.google-btn::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../assets/google-logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
