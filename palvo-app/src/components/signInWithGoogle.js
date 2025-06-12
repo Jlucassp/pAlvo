@@ -1,73 +1,29 @@
-import { useState } from "react";
+// Dentro de src/components/SignInWithGoogle.js (já renomeado)
+
+import React from 'react';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from '../firebase-config';
 
-const provider = new GoogleAuthProvider();
-
-function SignInWithGoogle() {
-
-  const [errorMessage, setErrorMessage] = useState('');  
-
+// O componente agora aceita 'className' como uma propriedade (prop)
+function SignInWithGoogle({ className }) {
+  
   const handleGoogleSignIn = async () => {
-    setErrorMessage('');
+    const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("Usuário logado com Google:", user);
-      // O token de acesso do Google:
-
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      if (credential) {
-        const token = credential.accessToken;
-        console.log("Google Access Token:", token);
-      }
-
-      //TODO: Qual redirecionamento agora que o login foi bem sucedido?
+      console.log("Usuário logado com Google:", result.user);
     } catch (error) {
-      console.error("Código do Erro:", error.code);
-      console.error("Mensagem do Erro:", error.message);
-
-      if (error.customData && error.customData.email) {
-        console.error("Email relacionado ao erro:", error.customData.email);
-      }
-      if (GoogleAuthProvider.credentialFromError(error)) {
-        console.error("Credencial relacionada ao erro:", GoogleAuthProvider.credentialFromError(error));
-      }
-
-      let friendlyMessage = "Ocorreu um erro ao tentar fazer login com o Google.";
-      switch (error.code) {
-        case 'auth/popup-closed-by-user':
-          friendlyMessage = "Você fechou a janela de login antes de completar o processo. Por favor, tente novamente.";
-          break;
-        case 'auth/popup-blocked':
-          friendlyMessage = "O login com Google foi bloqueado pelo seu navegador. Verifique se os pop-ups estão permitidos para este site e tente novamente.";
-          break;
-        case 'auth/cancelled-popup-request':
-          friendlyMessage = "A solicitação de login foi cancelada. Por favor, tente novamente.";
-          break;
-        case 'auth/account-exists-with-different-credential':
-          friendlyMessage = "Já existe uma conta com este endereço de e-mail, mas utilizando um método de login diferente. Tente fazer login com o outro método.";
-          break;
-        case 'auth/operation-not-allowed':
-            friendlyMessage = "Login com Google não está habilitado para esta aplicação. Contate o suporte.";
-            break;
-        case 'auth/network-request-failed':
-            friendlyMessage = "Houve um problema de rede. Verifique sua conexão e tente novamente.";
-            break;
-        default:
-          friendlyMessage = `Erro: ${error.message}`;
-      }
-      setErrorMessage(friendlyMessage);
+      console.error("Erro no login com Google:", error.message);
+      // Aqui você poderia usar o seu código de tratamento de erros,
+      // ou passar uma função de callback para exibir o erro na tela principal.
     }
   };
 
-   return (
-    <div>
-      <button onClick={handleGoogleSignIn} style={{ marginTop: '10px' }}>
-        Entrar com Google
-      </button>
-      {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
-    </div>
+  return (
+    // O botão agora usa a classe que passarmos para ele e tem o texto do protótipo
+    <button onClick={handleGoogleSignIn} className={className}>
+      Inscreva-se com o Google
+    </button>
   );
 }
 

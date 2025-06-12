@@ -1,9 +1,17 @@
-// src/components/SignIn.js
+// Dentro de src/components/SignIn.js
+
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase-config';
 
+// Passo 1: Importe o MESMO CSS do SignUp para reutilizar os estilos!
+import './SignUp.css'; 
+
+// Importe a imagem do logo que você já tem
+import rocketLogo from '../assets/Logo_Inicial_pAlvo_contextoAmigavel.png';
+
 function SignIn() {
+  // --- TODA A SUA LÓGICA DE BACKEND ESTÁ MANTIDA ---
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -16,20 +24,15 @@ function SignIn() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Usuário logado:", userCredential.user);
-      // Ações adicionais após o login bem-sucedido:
-      // TODO
-
       setEmail('');
       setPassword('');
     } catch (err) {
       console.error("Erro no login:", err.message);  
-      let msg = "Erro ao fazer login.";
-      if (err.code === 'auth/user-not-found') {
-        msg = 'Usuário não encontrado.';
-      } else if (err.code === 'auth/wrong-password') {
-        msg = 'Senha incorreta.';
+      let msg = "E-mail ou senha incorretos."; // Mensagem padrão mais amigável
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        msg = 'E-mail ou senha incorretos. Por favor, tente novamente.';
       } else if (err.code === 'auth/invalid-email') {
-        msg = 'E-mail inválido.';
+        msg = 'O formato do e-mail é inválido.';
       }
       setError(msg);
     } finally {
@@ -37,35 +40,33 @@ function SignIn() {
     }
   };
 
+  // --- INTERFACE (JSX) ATUALIZADA PARA FICAR IGUAL AO PROTÓTIPO ---
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSignIn}>
-        <div>
-          <label htmlFor="signin-email">Email:</label>
-          <input
-            id="signin-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="seu@email.com"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="signin-password">Senha:</label>
-          <input
-            id="signin-password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Sua senha"
-            required
-          />
-        </div>
-        <button type="submit" disabled={isLoading}>{isLoading ? 'Entrando' : 'Entrar'}</button>
+    <div className="signup-form-container"> {/* Usando a mesma classe do container */}
+      <img src={rocketLogo} alt="Logo pAlvo" className="signup-logo" />
+      <h2>Fazer Login</h2>
+      
+      <form onSubmit={handleSignIn} className="signup-form"> {/* Usando a mesma classe do formulário */}
+        <input 
+          type="email" 
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required 
+        />
+        <input 
+          type="password" 
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required 
+        />
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Entrando...' : 'Entrar'}
+        </button>
       </form>
-      {error && <p style={{ color: 'red' }}>Erro: {error}</p>}
+      {/* Exibe a mensagem de erro, se houver */}
+      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
     </div>
   );
 }

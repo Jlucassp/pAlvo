@@ -1,58 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase-config';
-
-import SignUp from './components/signUp';
-import SignIn from './components/signIn';
-import SignInWithGoogle from './components/signInWithGoogle';
-import SignOutButton from './components/signOutButton';
 import './App.css';
+
+// Importe os componentes que representam suas páginas
+import AuthScreen from './components/AuthScreen'; // Sua tela de login/cadastro
+import Home from './components/home'; // A tela principal para o usuário logado
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Esta lógica do Firebase é essencial e será mantida
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
-      if (user) {
-        console.log("Usuário logado detectado:", user);
-      } else {
-        console.log("Nenhum usuário logado detectado.");
-      }
     });
-
     return () => unsubscribe();
   }, []);
 
+  // Mostra "Carregando..." enquanto o Firebase verifica o status do usuário
   if (loading) {
-    return <p>Carregando...</p>;
+    return <div className="loading-container">Carregando...</div>;
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>pAlvo</h1>
-        {currentUser ? (
-          <div>
-            <p>Bem-vindo, {currentUser.displayName || currentUser.email}!</p>
-            {/* TODO: renderizaria o conteúdo principal*/}
-            <p>Seu UID: {currentUser.uid}</p>
-            <SignOutButton />
-          </div>
-        ) : (
-          <div>
-            <p>Por favor, faça login ou cadastre-se.</p>
-            <SignIn />
-            <hr />
-            <SignUp />
-            <hr />
-            <SignInWithGoogle />
-          </div>
-        )}
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Rota Principal ("/") */}
+        <Route 
+          path="/" 
+          element={
+            // Se EXISTE um usuário logado, mostre a página Home.
+            // Se NÃO, redirecione para a página de login.
+            currentUser ? <Home /> : <Navigate to="/signin" />
+          } 
+        />
+
+        {/* Rota de Login ("/signin") */}
+        <Route 
+          path="/signin" 
+          element={
+            // Se NÃO existe um usuário logado, mostre a sua tela AuthScreen.
+            // Se o usuário JÁ ESTÁ logado, redirecione para a página principal.
+            !currentUser ? <AuthScreen /> : <Navigate to="/" />
+          } 
+        />
+        
+        {/* Você pode adicionar outras rotas aqui no futuro, como /signup ou /profile */}
+      </Routes>
+    </Router>
   );
 }
 
