@@ -1,17 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Irei deixar essas chaves aqui, pois o repositório está PRIVADO. Se for torna-lo público,
-// é importante criar um .env
-
 const firebaseConfig = {
-  apiKey: "AIzaSyDRdsUCmLb43-0ThZJ8MWpm89J87Y0uFlg",
-  authDomain: "palvo-44fe7.firebaseapp.com",
-  projectId: "palvo-44fe7",
-  storageBucket: "palvo-44fe7.firebasestorage.app",
-  messagingSenderId: "135078743373",
-  appId: "1:135078743373:web:b2187d1bd55e8935a3fb04",
-  measurementId: "G-T0N7CLCVLV"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
